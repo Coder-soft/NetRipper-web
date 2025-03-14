@@ -1,0 +1,481 @@
+<!-- privacy.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+    <title>Net Ripper - Ultra-Fast Download Accelerator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        :root {
+            --primary: #00ff88;
+            --secondary: #00ccff;
+        }
+
+        body {
+            background: linear-gradient(45deg, #0a0a0a, #1a1a1a);
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .header {
+            position: fixed;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        .pricing-badge {
+        margin-top: 2rem;
+        position: relative;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeUp 0.8s 0.6s forwards;
+    }
+
+    .free-forever {
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: linear-gradient(45deg, var(--primary), var(--secondary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-family: 'Arial Black', sans-serif;
+        position: relative;
+        display: inline-block;
+    }
+
+    .underline {
+        height: 3px;
+        width: 100%;
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
+        transform: scaleX(0);
+        transition: transform 0.3s;
+    }
+
+    .pricing-badge:hover .underline {
+        transform: scaleX(1);
+    }
+
+    .footer {
+        background: rgba(0, 0, 0, 0.9);
+        padding: 4rem 5%;
+        backdrop-filter: blur(10px);
+        transform: translateY(50px);
+        opacity: 0;
+    }
+
+    .footer.visible {
+        transform: translateY(0);
+        opacity: 1;
+        transition: 0.8s;
+    }
+
+    .footer-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 3rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .footer-section {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .footer-section h4 {
+        color: var(--primary);
+        margin-bottom: 1.5rem;
+        font-size: 1.2rem;
+    }
+
+    .footer-section a {
+        color: #fff;
+        text-decoration: none;
+        margin-bottom: 0.8rem;
+        transition: 0.3s;
+    }
+
+    .footer-section a:hover {
+        color: var(--secondary);
+    }
+
+    .social-icons {
+        display: flex;
+        gap: 1.5rem;
+        margin-top: 1rem;
+    }
+
+    .social-icons a {
+        font-size: 1.5rem;
+        transition: 0.3s;
+    }
+
+    .social-icons a:hover {
+        transform: translateY(-3px);
+    }
+
+    @media (max-width: 768px) {
+        .free-forever {
+            font-size: 2rem;
+        }
+    }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 2.5rem;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: 0.3s;
+        }
+
+        .nav a:hover::after {
+            width: 100%;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 5%;
+            background: radial-gradient(circle at 50% 50%, rgba(0,255,136,0.1), transparent);
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.8s forwards;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.8s 0.2s forwards;
+        }
+
+        .cta-btn {
+            padding: 1rem 2.5rem;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 30px;
+            color: #000;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.8s 0.4s forwards;
+        }
+
+        .cta-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0,255,136,0.4);
+        }
+
+        .features {
+            padding: 5rem 5%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+
+        .feature-card {
+            background: rgba(255,255,255,0.05);
+            padding: 2rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+            transform: translateY(50px);
+            opacity: 0;
+        }
+        .fontseason {
+    font-family: 'Roboto Mono', italic;
+    text-decoration: none;
+    color: #fff;
+    font-size: 30px;
+  }
+
+        .feature-card.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .feature-card:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-10px);
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .speed-comparison {
+        padding: 5rem 5%;
+        text-align: center;
+    }
+
+    .speed-container {
+        max-width: 800px;
+        margin: 2rem auto;
+    }
+
+    .speed-item {
+        margin: 2rem 0;
+    }
+
+    .speed-label {
+        text-align: left;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--primary);
+    }
+
+    .speed-bar {
+        height: 40px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 20px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .speed-fill {
+        height: 100%;
+        width: 0;
+        transition: 2s width;
+        position: relative;
+    }
+
+    .speed-bar[data-brand="idm"] .speed-fill {
+        background: linear-gradient(90deg, #ff4d4d, #ff0000);
+    }
+
+    .speed-bar[data-brand="netripper"] .speed-fill {
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
+    }
+
+    .speed-bar::after {
+        content: attr(data-percentage);
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #fff;
+        font-weight: 700;
+    }
+
+        @media (max-width: 768px) {
+            .nav {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+        }
+        /* Add these styles */
+.legal-content {
+    padding: 4rem 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.gradient-heading {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.gradient-heading h1 {
+    font-size: 3rem;
+    background: linear-gradient(45deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.gradient-line {
+    height: 3px;
+    width: 200px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    margin: 1rem auto;
+}
+
+.mission-statement {
+    font-size: 1.2rem;
+    padding: 2rem;
+    background: rgba(255,255,255,0.05);
+    border-left: 4px solid var(--primary);
+    margin: 2rem 0;
+}
+
+.legal-text h2 {
+    color: var(--secondary);
+    margin: 2rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid rgba(255,255,255,0.1);
+}
+
+.zero-data-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: rgba(0,255,136,0.1);
+    border: 2px solid var(--primary);
+    border-radius: 50px;
+    margin: 2rem 0;
+}
+
+.signature {
+    margin-top: 4rem;
+    text-align: right;
+}
+
+.xe0n-signature {
+    width: 200px;
+    margin-top: 1rem;
+    display: inline-block;
+    opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+    .gradient-heading h1 {
+        font-size: 2rem;
+    }
+    
+    .mission-statement {
+        padding: 1rem;
+    }
+}
+.padding {
+    padding-top: 50px;
+}
+.paddingleft {
+    padding-left: 10px;
+}
+    </style>
+</head>
+    <title>Privacy Policy - Net Ripper</title>
+<body>
+    <header class="header">
+        <div class="logo">NetRipper</div>
+        <nav class="nav">
+            <a href="/">Home</a>
+            <a href="terms.html">Terms</a>
+        </nav>
+    </header>
+
+    <section class="legal-content">
+        <div class="gradient-heading">
+            <h1 class="padding">Privacy Policy</h1>
+            <div class="gradient-line"></div>
+        </div>
+
+        <div class="legal-text">
+            <p class="mission-statement">
+                "Net Ripper is Open Source, Free Forever, Secure, Lightweight. All processing occurs on your device.
+                We take no data - it all stays with you." - Xe0n
+            </p>
+
+            <h2>1. Data Collection</h2>
+            <p>We collect <strong>absolutely nothing</strong>:</p>
+            <ul>
+                <li>No usage analytics</li>
+                <li>No telemetry</li>
+                <li>No crash reports</li>
+                <li>No user identifiers</li>
+            </ul>
+
+            <h2>2. Local Processing</h2>
+            <p>All operations including:</p>
+            <ul>
+                <li>Download management</li>
+                <li>Speed optimization</li>
+                <li>File verification</li>
+            </ul>
+            <p>...occur 100% on your device.</p>
+
+            <h2>3. Security Measures</h2>
+            <p>Built with:</p>
+            <ul>
+                <li>Memory-safe Rust core</li>
+                <li>Sandboxed processes</li>
+                <li>Automatic HTTPS enforcement</li>
+            </ul>
+
+            <div class="zero-data-badge">
+                <i class="fas fa-database"></i>
+                <span class="paddingleft">Zero Data Collection Guarantee</span>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>NetRipper</h4>
+                <p>© 2025 NetRipper. All rights reserved.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-discord"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4> Other Products</h4>
+                <a href="https://creatoronwheels.netlify.app">CreatorOnWheels</a>
+                <a href="https://creator-api.netlify.app/">Creator API</a>
+                <a href="https://Xe0n.pages.dev">Xe0nORG</a>
+            </div>
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <a href="/privacy.html">Privacy Policy</a>
+                <a href="/terms.html">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
