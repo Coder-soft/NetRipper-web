@@ -510,7 +510,7 @@
             position: relative;
             z-index: 1;
         }
-            /* Add these styles */
+
     .file-badge.latest {
         background: linear-gradient(45deg, var(--primary), var(--secondary));
         color: #000 !important;
@@ -679,251 +679,155 @@
     </footer>
     
     <script>
-       
-        document.querySelectorAll('.download-button').forEach(button => {
-            button.addEventListener('click', function(e) {
-                
-                this.classList.add('downloading');
-                setTimeout(() => this.classList.remove('downloading'), 2000);
-            });
-        });
-    </script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const repoOwner = 'Coder-Soft';  
-        const repoName = 'NetRipper-web'; 
-        const releasesPath = 'get-netripper';  
-        
-        const downloadGrid = document.querySelector('.download-grid');
-        const loadingHTML = `
-            <div class="loading-container">
-                <div class="loading-spinner"></div>
-                <div class="loading-text">Fetching latest releases...</div>
-            </div>
-        `;
-        downloadGrid.innerHTML = loadingHTML;
+        document.addEventListener('DOMContentLoaded', function() {
+            const repoOwner = 'Coder-Soft';
+            const repoName = 'NetRipper-web';
+            const releasesPath = 'get-netripper';
+            const countapiNamespace = 'netripper';
+            let allVersions = [];
+            let latestVersion = '0.0.0';
     
-        fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${releasesPath}`)
-        .then(response => response.json())
-        .then(files => {
-            downloadGrid.innerHTML = '';
-            files.forEach(file => {
-                if (file.type === 'file' && isValidFileType(file.name)) {
-                    const card = createDownloadCard(file);
-                    downloadGrid.appendChild(card);
+            const downloadGrid = document.querySelector('.download-grid');
+            downloadGrid.innerHTML = `
+                <div class="loading-container">
+                    <div class="loading-spinner"></div>
+                    <div class="loading-text">Fetching latest releases...</div>
+                </div>
+            `;
+    
+            // Main data fetching and processing
+            fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${releasesPath}`)
+            .then(response => response.json())
+            .then(files => {
+                downloadGrid.innerHTML = '';
+                
+                // First pass to collect versions
+                files.forEach(file => {
+                    if (file.type === 'file' && isValidFileType(file.name)) {
+                        const version = extractVersion(file.name);
+                        if (version) allVersions.push(version);
+                    }
+                });
+                
+                // Determine latest version
+                latestVersion = determineLatestVersion(allVersions);
+                
+                // Second pass to create cards
+                files.forEach(file => {
+                    if (file.type === 'file' && isValidFileType(file.name)) {
+                        const card = createDownloadCard(file, latestVersion);
+                        downloadGrid.appendChild(card);
+                    }
+                });
+            })
+            .catch(error => {
+                downloadGrid.innerHTML = `
+                    <div class="error-message">
+                        Failed to load releases. Please try again later.
+                    </div>
+                `;
+            });
+    
+            // Helper functions
+            function isValidFileType(filename) {
+                const validExtensions = ['.exe', '.dmg', '.deb', '.zip', '.tar.gz'];
+                return validExtensions.some(ext => filename.endsWith(ext));
+            }
+    
+            function extractVersion(filename) {
+                const versionMatch = filename.match(/(v|V)?(\d+\.\d+\.\d+)/);
+                return versionMatch ? versionMatch[2] : null;
+            }
+    
+            function determineLatestVersion(versions) {
+                return versions.reduce((latest, current) => {
+                    const [latMajor, latMinor, latPatch] = latest.split('.').map(Number);
+                    const [curMajor, curMinor, curPatch] = current.split('.').map(Number);
+                    
+                    return curMajor > latMajor || 
+                          (curMajor === latMajor && curMinor > latMinor) ||
+                          (curMajor === latMajor && curMinor === latMinor && curPatch > latPatch) 
+                          ? current : latest;
+                }, '0.0.0');
+            }
+    
+            function getPlatform(filename) {
+                const platforms = {
+                    'win': 'Windows', 'linux': 'Linux', 'mac': 'macOS',
+                    'exe': 'Windows', 'dmg': 'macOS', 'deb': 'Linux'
+                };
+                const key = Object.keys(platforms).find(k => filename.toLowerCase().includes(k));
+                return platforms[key] || 'Unknown';
+            }
+    
+            function createDownloadCard(file, latestVersion) {
+                const card = document.createElement('div');
+                card.className = 'download-card';
+                
+                const platform = getPlatform(file.name);
+                const version = extractVersion(file.name);
+                const sizeMB = (file.size / (1024 * 1024)).toFixed(1);
+                const countKey = encodeURIComponent(file.name);
+                const isLatest = version === latestVersion;
+                const isPrerelease = /(alpha|beta|rc|dev)/i.test(file.name);
+    
+                card.innerHTML = `
+                    <div class="file-info">
+                        <div class="file-name">${file.name}</div>
+                        <div class="file-details">
+                            ${isLatest ? '<span class="file-badge latest">Latest</span>' : ''}
+                            <span class="file-badge platform-${platform}">${platform}</span>
+                            ${isPrerelease ? '<span class="file-badge prerelease">Pre-release</span>' : ''}
+                            <span class="file-badge version">v${version || '1.0.0'}</span>
+                        </div>
+                        <div class="file-meta">
+                            <span><i class="fas fa-weight-hanging"></i> ${sizeMB} MB</span>
+                            <span class="download-count"><i class="fas fa-spinner fa-spin"></i></span>
+                        </div>
+                        <a href="${file.download_url}" class="download-button" data-key="${countKey}">
+                            <i class="fas fa-download"></i>
+                            Download
+                        </a>
+                    </div>
+                `;
+    
+                // Load download count
+                fetch(`https://api.countapi.xyz/get/${countapiNamespace}/${countKey}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        card.querySelector('.download-count').innerHTML = 
+                            `<i class="fas fa-download"></i> ${data.value || 0}`;
+                    })
+                    .catch(() => {
+                        card.querySelector('.download-count').innerHTML = 
+                            '<i class="fas fa-download"></i> N/A';
+                    });
+    
+                return card;
+            }
+    
+            // Download tracking
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.download-button')) {
+                    const button = e.target.closest('.download-button');
+                    const countKey = button.dataset.key;
+                    const countElement = button.parentElement.querySelector('.download-count');
+                    const currentCount = parseInt(countElement.textContent) || 0;
+    
+                    // Update UI immediately
+                    countElement.innerHTML = `<i class="fas fa-download"></i> ${currentCount + 1}`;
+    
+                    // Send count update
+                    fetch(`https://api.countapi.xyz/hit/${countapiNamespace}/${countKey}`)
+                        .catch(() => countElement.innerHTML = `<i class="fas fa-download"></i> ${currentCount}`);
+    
+                    // Open download
+                    window.open(button.href, '_blank');
+                    e.preventDefault();
                 }
             });
-            
-        })
-        
-        .catch(error => {
-            downloadGrid.innerHTML = `
-                <div class="error-message">
-                    Failed to load releases. Please try again later.
-                </div>
-            `;
         });
-    
-        function isValidFileType(filename) {
-            const validExtensions = ['.exe', '.dmg', '.deb', '.zip', '.tar.gz'];
-            return validExtensions.some(ext => filename.endsWith(ext));
-        }
-    
-        function createDownloadCard(file) {
-            const card = document.createElement('div');
-            card.className = 'download-card';
-            
-            const platform = getPlatform(file.name);
-            const version = extractVersion(file.name);
-            const sizeMB = (file.size / (1024 * 1024)).toFixed(1);
-            
-            card.innerHTML = `
-                <div class="file-info">
-                    <div class="file-name">${file.name}</div>
-                    <div class="file-details">
-                        <span class="file-badge platform-${platform}">${platform}</span>
-                        <span class="file-badge version">v${version}</span>
-                    </div>
-                    <div class="file-meta">
-                        <span><i class="fas fa-weight-hanging"></i> ${sizeMB} MB</span>
-                        <span><i class="fas fa-calendar-alt"></i> ${new Date(file.created_at).toLocaleDateString()}</span>
-                    </div>
-                    <a href="${file.download_url}" class="download-button">
-                        <i class="fas fa-download"></i>
-                        Download
-                    </a>
-                </div>
-            `;
-            return card;
-        }
-    
-        function getPlatform(filename) {
-            const platforms = {
-                'win': 'Windows',
-                'linux': 'Linux',
-                'mac': 'macOS',
-                'exe': 'Windows',
-                'dmg': 'macOS',
-                'deb': 'Linux'
-            };
-            const key = Object.keys(platforms).find(k => filename.toLowerCase().includes(k));
-            return platforms[key] || 'Unknown';
-        }
-    
-        function extractVersion(filename) {
-            const versionMatch = filename.match(/\d+\.\d+\.\d+/);
-            return versionMatch ? versionMatch[0] : '1.0.0';
-        }
-    });
-    document.addEventListener('DOMContentLoaded', function() {
-    const repoOwner = 'Xe0n';
-    const repoName = 'NetRipper';
-    const releasesPath = 'releases';
-    const countapiNamespace = 'netripper'; 
-
-
-    function createDownloadCard(file) {
-        const card = document.createElement('div');
-        card.className = 'download-card';
-        const platform = getPlatform(file.name);
-        const version = extractVersion(file.name);
-        const sizeMB = (file.size / (1024 * 1024)).toFixed(1);
-        const countKey = `${encodeURIComponent(file.name)}`;
-
-        card.innerHTML = `
-            <div class="file-info">
-                <div class="file-name">${file.name}</div>
-                <div class="file-details">
-                    <span class="file-badge platform-${platform}">${platform}</span>
-                    <span class="file-badge version">v${version}</span>
-                </div>
-                <div class="file-meta">
-                    <span><i class="fas fa-weight-hanging"></i> ${sizeMB} MB</span>
-                    <span class="download-count"><i class="fas fa-spinner fa-spin"></i></span>
-                </div>
-                <a href="${file.download_url}" class="download-button" data-key="${countKey}">
-                    <i class="fas fa-download"></i>
-                    Download
-                </a>
-            </div>
-        `;
-
-        // Load initial count
-        fetch(`https://api.countapi.xyz/get/${countapiNamespace}/${countKey}`)
-            .then(response => response.json())
-            .then(data => {
-                card.querySelector('.download-count').innerHTML = 
-                    `<i class="fas fa-download"></i> ${data.value || 0}`;
-            })
-            .catch(() => {
-                card.querySelector('.download-count').innerHTML = 
-                    '<i class="fas fa-download"></i> N/A';
-            });
-
-        return card;
-    }
-
-    // Track downloads
-    document.addEventListener('click', function(e) {
-        if (e.target.closest('.download-button')) {
-            const button = e.target.closest('.download-button');
-            const countKey = button.dataset.key;
-            const countElement = button.parentElement.querySelector('.download-count');
-
-            const currentCount = parseInt(countElement.textContent) || 0;
-            countElement.innerHTML = `<i class="fas fa-download"></i> ${currentCount + 1}`;
-
-            
-            fetch(`https://api.countapi.xyz/hit/${countapiNamespace}/${countKey}`)
-                .catch(error => {
-                 
-                    countElement.innerHTML = `<i class="fas fa-download"></i> ${currentCount}`;
-                });
-
-            const downloadUrl = button.href;
-            window.open(downloadUrl, '_blank');
-            e.preventDefault();
-        }
-    });
-});
-let allVersions = [];
-    let latestVersion = '0.0.0';
-
-    fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${releasesPath}`)
-    .then(response => response.json())
-    .then(files => {
-        // First pass to collect all versions
-        files.forEach(file => {
-            if (file.type === 'file' && isValidFileType(file.name)) {
-                const version = extractVersion(file.name);
-                if (version) allVersions.push(version);
-            }
-        });
-        
-        // Determine latest version
-        latestVersion = determineLatestVersion(allVersions);
-        
-        // Second pass to create cards
-        files.forEach(file => {
-            if (file.type === 'file' && isValidFileType(file.name)) {
-                const card = createDownloadCard(file, latestVersion);
-                downloadGrid.appendChild(card);
-            }
-        });
-    });
-    
-    function extractVersion(filename) {
-        // Improved version extraction with v/V support
-        const versionMatch = filename.match(/[vV]?(\d+\.\d+\.\d+)/);
-        return versionMatch ? versionMatch[1] : null;
-    }
-
-    function determineLatestVersion(versions) {
-        return versions.reduce((latest, current) => {
-            const [latMajor, latMinor, latPatch] = latest.split('.').map(Number);
-            const [curMajor, curMinor, curPatch] = current.split('.').map(Number);
-            
-            if (curMajor > latMajor) return current;
-            if (curMajor === latMajor && curMinor > latMinor) return current;
-            if (curMajor === latMajor && curMinor === latMinor && curPatch > latPatch) return current;
-            return latest;
-        }, '0.0.0');
-    }
-
-    function createDownloadCard(file, latestVersion) {
-        const card = document.createElement('div');
-        card.className = 'download-card';
-        
-        const platform = getPlatform(file.name);
-        const version = extractVersion(file.name);
-        const sizeMB = (file.size / (1024 * 1024)).toFixed(1);
-        const countKey = `${encodeURIComponent(file.name)}`;
-        const isLatest = version === latestVersion;
-        const isPrerelease = /(alpha|beta|rc|dev)/i.test(file.name);
-
-        card.innerHTML = `
-            <div class="file-info">
-                <div class="file-name">${file.name}</div>
-                <div class="file-details">
-                    ${isLatest ? '<span class="file-badge latest">Latest</span>' : ''}
-                    <span class="file-badge platform-${platform}">${platform}</span>
-                    ${isPrerelease ? '<span class="file-badge prerelease">Pre-release</span>' : ''}
-                    <span class="file-badge version">v${version}</span>
-                </div>
-                <div class="file-meta">
-                    <span><i class="fas fa-weight-hanging"></i> ${sizeMB} MB</span>
-                    <span class="download-count"><i class="fas fa-spinner fa-spin"></i></span>
-                </div>
-                <a href="${file.download_url}" class="download-button" data-key="${countKey}">
-                    <i class="fas fa-download"></i>
-                    Download
-                </a>
-            </div>
-        `;
-
-        return card;
-    }
-    </script>
+        </script>
 
 </body>
 </html>
