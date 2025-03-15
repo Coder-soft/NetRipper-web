@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Net Ripper - Downloads</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        :root {
+            --primary: #00ff88;
+            --secondary: #00ccff;
+        }
+
+        body {
+            background: linear-gradient(45deg, #0a0a0a, #1a1a1a);
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .header {
+            position: fixed;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        .pricing-badge {
+        margin-top: 2rem;
+        position: relative;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeUp 0.8s 0.6s forwards;
+    }
+
+    .free-forever {
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: linear-gradient(45deg, var(--primary), var(--secondary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-family: 'Arial Black', sans-serif;
+        position: relative;
+        display: inline-block;
+    }
+
+    .underline {
+        height: 3px;
+        width: 100%;
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
+        transform: scaleX(0);
+        transition: transform 0.3s;
+    }
+
+    .pricing-badge:hover .underline {
+        transform: scaleX(1);
+    }
+
+    .footer {
+        background: rgba(0, 0, 0, 0.9);
+        padding: 4rem 5%;
+        backdrop-filter: blur(10px);
+        transform: translateY(50px);
+        opacity: 0;
+    }
+
+    .footer.visible {
+        transform: translateY(0);
+        opacity: 1;
+        transition: 0.8s;
+    }
+
+    .footer-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 3rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .footer-section {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .footer-section h4 {
+        color: var(--primary);
+        margin-bottom: 1.5rem;
+        font-size: 1.2rem;
+    }
+
+    .footer-section a {
+        color: #fff;
+        text-decoration: none;
+        margin-bottom: 0.8rem;
+        transition: 0.3s;
+    }
+
+    .footer-section a:hover {
+        color: var(--secondary);
+    }
+
+    .social-icons {
+        display: flex;
+        gap: 1.5rem;
+        margin-top: 1rem;
+    }
+
+    .social-icons a {
+        font-size: 1.5rem;
+        transition: 0.3s;
+    }
+
+    .social-icons a:hover {
+        transform: translateY(-3px);
+    }
+
+    @media (max-width: 768px) {
+        .free-forever {
+            font-size: 2rem;
+        }
+    }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 2.5rem;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: 0.3s;
+        }
+
+        .nav a:hover::after {
+            width: 100%;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 5%;
+            background: radial-gradient(circle at 50% 50%, rgba(0,255,136,0.1), transparent);
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.8s forwards;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.8s 0.2s forwards;
+        }
+
+        .cta-btn {
+            padding: 1rem 2.5rem;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 30px;
+            color: #000;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.8s 0.4s forwards;
+        }
+
+        .cta-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0,255,136,0.4);
+        }
+
+        .features {
+            padding: 5rem 5%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+
+        .feature-card {
+            background: rgba(255,255,255,0.05);
+            padding: 2rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+            transform: translateY(50px);
+            opacity: 0;
+        }
+        .fontseason {
+    font-family: 'Roboto Mono', italic;
+    text-decoration: none;
+    color: #fff;
+    font-size: 30px;
+  }
+  .loading-container {
+            text-align: center;
+            padding: 2rem;
+            grid-column: 1 / -1;
+        }
+    
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(0,255,136,0.3);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            margin: 0 auto;
+            animation: spin 1s linear infinite;
+        }
+    
+        .loading-text {
+            margin-top: 1rem;
+            color: var(--secondary);
+        }
+    
+        .error-message {
+            color: #ff4444;
+            padding: 2rem;
+            text-align: center;
+            grid-column: 1 / -1;
+        }
+    
+        .file-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-right: 0.5rem;
+        }
+    
+        .platform-Windows { background: rgba(0,204,255,0.2); color: var(--secondary); }
+        .platform-Linux { background: rgba(0,255,136,0.2); color: var(--primary); }
+        .platform-macOS { background: rgba(255,255,255,0.1); color: #fff; }
+        .version { background: rgba(255,255,255,0.15); color: #fff; }
+    
+        .file-meta {
+            margin: 1rem 0;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+        }
+    
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    /* Add these styles */
+    .download-count {
+        color: var(--secondary);
+        font-size: 0.9rem;
+    }
+
+    .download-count i {
+        margin-right: 5px;
+    }
+
+    .fa-spinner {
+        animation: spin 1s linear infinite;
+        font-size: 0.8rem;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+        .feature-card.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .feature-card:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-10px);
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .speed-comparison {
+        padding: 5rem 5%;
+        text-align: center;
+    }
+
+    .speed-container {
+        max-width: 800px;
+        margin: 2rem auto;
+    }
+
+    .speed-item {
+        margin: 2rem 0;
+    }
+
+    .speed-label {
+        text-align: left;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--primary);
+    }
+
+    .speed-bar {
+        height: 40px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 20px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .speed-fill {
+        height: 100%;
+        width: 0;
+        transition: 2s width;
+        position: relative;
+    }
+
+    .speed-bar[data-brand="idm"] .speed-fill {
+        background: linear-gradient(90deg, #ff4d4d, #ff0000);
+    }
+
+    .speed-bar[data-brand="netripper"] .speed-fill {
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
+    }
+
+    .speed-bar::after {
+        content: attr(data-percentage);
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #fff;
+        font-weight: 700;
+    }
+
+        @media (max-width: 768px) {
+            .nav {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+        }
+        /* Add these styles */
+.legal-content {
+    padding: 4rem 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.gradient-heading {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.gradient-heading h1 {
+    font-size: 3rem;
+    background: linear-gradient(45deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.gradient-line {
+    height: 3px;
+    width: 200px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    margin: 1rem auto;
+}
+
+.mission-statement {
+    font-size: 1.2rem;
+    padding: 2rem;
+    background: rgba(255,255,255,0.05);
+    border-left: 4px solid var(--primary);
+    margin: 2rem 0;
+}
+
+.legal-text h2 {
+    color: var(--secondary);
+    margin: 2rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid rgba(255,255,255,0.1);
+}
+
+.zero-data-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: rgba(0,255,136,0.1);
+    border: 2px solid var(--primary);
+    border-radius: 50px;
+    margin: 2rem 0;
+}
+
+.signature {
+    margin-top: 4rem;
+    text-align: right;
+}
+
+.xe0n-signature {
+    width: 200px;
+    margin-top: 1rem;
+    display: inline-block;
+    opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+    .gradient-heading h1 {
+        font-size: 2rem;
+    }
+    
+    .mission-statement {
+        padding: 1rem;
+    }
+}
+.padding {
+    padding-top: 50px;
+}
+.paddingleft {
+    padding-left: 10px;
+}
+
+        .downloads-container {
+            padding: 5rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .download-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .download-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: 0.3s;
+            border: 1px solid rgba(0,255,136,0.1);
+        }
+
+        .download-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,255,136,0.1);
+        }
+
+        .download-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0,255,136,0.1), transparent);
+            transform: rotate(45deg);
+            transition: 0.5s;
+        }
+
+        .download-card:hover::before {
+            animation: downloadGlow 2s linear infinite;
+        }
+
+        .file-info {
+            position: relative;
+            z-index: 1;
+        }
+
+        .file-name {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .file-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .download-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.8rem 2rem;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border-radius: 30px;
+            color: #000;
+            text-decoration: none;
+            font-weight: 700;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-button:hover {
+            box-shadow: 0 0 25px rgba(0,255,136,0.3);
+        }
+
+        .download-button i {
+            margin-right: 0.8rem;
+        }
+
+        @keyframes downloadGlow {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">NetRipper</div>
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="downloads.html">Downloads</a>
+            <a href="terms.html">Terms</a>
+            <a href="privacy.html">Privacy</a>
+        </nav>
+    </header>
+
+    <section class="downloads-container">
+        <div class="gradient-heading">
+            <h1>Downloads</h1>
+            <div class="gradient-line"></div>
+        </div>
+
+        <div class="download-grid">
+            <!-- Example File 1 -->
+            <div class="download-card">
+                <div class="file-info">
+                    <div class="file-name">NetRipper-Windows-x64.exe</div>
+                    <div class="file-details">
+                        <span>Version: 1.0.0</span>
+                        <span>64-bit</span>
+                    </div>
+                    <div class="file-details">
+                        <span>Size: 8.4 MB</span>
+                        <span>Stable</span>
+                    </div>
+                    <a href="downloads/NetRipper-Windows-x64.exe" class="download-button">
+                        <i class="fas fa-download"></i>
+                        Download
+                    </a>
+                </div>
+            </div>
+
+            <!-- Example File 2 -->
+            <div class="download-card">
+                <div class="file-info">
+                    <div class="file-name">NetRipper-Linux.deb</div>
+                    <div class="file-details">
+                        <span>Version: 1.0.0</span>
+                        <span>Debian</span>
+                    </div>
+                    <div class="file-details">
+                        <span>Size: 9.1 MB</span>
+                        <span>Beta</span>
+                    </div>
+                    <a href="downloads/NetRipper-Linux.deb" class="download-button">
+                        <i class="fas fa-download"></i>
+                        Download
+                    </a>
+                </div>
+            </div>
+
+            <!-- Example File 3 -->
+            <div class="download-card">
+                <div class="file-info">
+                    <div class="file-name">NetRipper-MacOS.dmg</div>
+                    <div class="file-details">
+                        <span>Version: 1.0.0</span>
+                        <span>Universal</span>
+                    </div>
+                    <div class="file-details">
+                        <span>Size: 12.2 MB</span>
+                        <span>Alpha</span>
+                    </div>
+                    <a href="downloads/NetRipper-MacOS.dmg" class="download-button">
+                        <i class="fas fa-download"></i>
+                        Download
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>NetRipper</h4>
+                <p>© 2025 NetRipper. All rights reserved.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-discord"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4> Other Products</h4>
+                <a href="https://creatoronwheels.netlify.app">CreatorOnWheels</a>
+                <a href="https://creator-api.netlify.app/">Creator API</a>
+                <a href="https://Xe0n.pages.dev">Xe0nORG</a>
+            </div>
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <a href="/privacy.html">Privacy Policy</a>
+                <a href="/terms.html">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+       
+        document.querySelectorAll('.download-button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                
+                this.classList.add('downloading');
+                setTimeout(() => this.classList.remove('downloading'), 2000);
+            });
+        });
+    </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const repoOwner = 'Coder-Soft';  
+        const repoName = 'NetRipper-web'; 
+        const releasesPath = 'get-netripper';  
+        
+        const downloadGrid = document.querySelector('.download-grid');
+        const loadingHTML = `
+            <div class="loading-container">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">Fetching latest releases...</div>
+            </div>
+        `;
+        downloadGrid.innerHTML = loadingHTML;
+    
+        fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${releasesPath}`)
+        .then(response => response.json())
+        .then(files => {
+            downloadGrid.innerHTML = '';
+            files.forEach(file => {
+                if (file.type === 'file' && isValidFileType(file.name)) {
+                    const card = createDownloadCard(file);
+                    downloadGrid.appendChild(card);
+                }
+            });
+            
+        })
+        
+        .catch(error => {
+            downloadGrid.innerHTML = `
+                <div class="error-message">
+                    Failed to load releases. Please try again later.
+                </div>
+            `;
+        });
+    
+        function isValidFileType(filename) {
+            const validExtensions = ['.exe', '.dmg', '.deb', '.zip', '.tar.gz'];
+            return validExtensions.some(ext => filename.endsWith(ext));
+        }
+    
+        function createDownloadCard(file) {
+            const card = document.createElement('div');
+            card.className = 'download-card';
+            
+            const platform = getPlatform(file.name);
+            const version = extractVersion(file.name);
+            const sizeMB = (file.size / (1024 * 1024)).toFixed(1);
+            
+            card.innerHTML = `
+                <div class="file-info">
+                    <div class="file-name">${file.name}</div>
+                    <div class="file-details">
+                        <span class="file-badge platform-${platform}">${platform}</span>
+                        <span class="file-badge version">v${version}</span>
+                    </div>
+                    <div class="file-meta">
+                        <span><i class="fas fa-weight-hanging"></i> ${sizeMB} MB</span>
+                        <span><i class="fas fa-calendar-alt"></i> ${new Date(file.created_at).toLocaleDateString()}</span>
+                    </div>
+                    <a href="${file.download_url}" class="download-button">
+                        <i class="fas fa-download"></i>
+                        Download
+                    </a>
+                </div>
+            `;
+            return card;
+        }
+    
+        function getPlatform(filename) {
+            const platforms = {
+                'win': 'Windows',
+                'linux': 'Linux',
+                'mac': 'macOS',
+                'exe': 'Windows',
+                'dmg': 'macOS',
+                'deb': 'Linux'
+            };
+            const key = Object.keys(platforms).find(k => filename.toLowerCase().includes(k));
+            return platforms[key] || 'Unknown';
+        }
+    
+        function extractVersion(filename) {
+            const versionMatch = filename.match(/\d+\.\d+\.\d+/);
+            return versionMatch ? versionMatch[0] : '1.0.0';
+        }
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+    const repoOwner = 'Xe0n';
+    const repoName = 'NetRipper';
+    const releasesPath = 'releases';
+    const countapiNamespace = 'netripper'; 
+
+
+    function createDownloadCard(file) {
+        const card = document.createElement('div');
+        card.className = 'download-card';
+        const platform = getPlatform(file.name);
+        const version = extractVersion(file.name);
+        const sizeMB = (file.size / (1024 * 1024)).toFixed(1);
+        const countKey = `${encodeURIComponent(file.name)}`;
+
+        card.innerHTML = `
+            <div class="file-info">
+                <div class="file-name">${file.name}</div>
+                <div class="file-details">
+                    <span class="file-badge platform-${platform}">${platform}</span>
+                    <span class="file-badge version">v${version}</span>
+                </div>
+                <div class="file-meta">
+                    <span><i class="fas fa-weight-hanging"></i> ${sizeMB} MB</span>
+                    <span class="download-count"><i class="fas fa-spinner fa-spin"></i></span>
+                </div>
+                <a href="${file.download_url}" class="download-button" data-key="${countKey}">
+                    <i class="fas fa-download"></i>
+                    Download
+                </a>
+            </div>
+        `;
+
+        // Load initial count
+        fetch(`https://api.countapi.xyz/get/${countapiNamespace}/${countKey}`)
+            .then(response => response.json())
+            .then(data => {
+                card.querySelector('.download-count').innerHTML = 
+                    `<i class="fas fa-download"></i> ${data.value || 0}`;
+            })
+            .catch(() => {
+                card.querySelector('.download-count').innerHTML = 
+                    '<i class="fas fa-download"></i> N/A';
+            });
+
+        return card;
+    }
+
+    // Track downloads
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.download-button')) {
+            const button = e.target.closest('.download-button');
+            const countKey = button.dataset.key;
+            const countElement = button.parentElement.querySelector('.download-count');
+
+            const currentCount = parseInt(countElement.textContent) || 0;
+            countElement.innerHTML = `<i class="fas fa-download"></i> ${currentCount + 1}`;
+
+            
+            fetch(`https://api.countapi.xyz/hit/${countapiNamespace}/${countKey}`)
+                .catch(error => {
+                 
+                    countElement.innerHTML = `<i class="fas fa-download"></i> ${currentCount}`;
+                });
+
+            const downloadUrl = button.href;
+            window.open(downloadUrl, '_blank');
+            e.preventDefault();
+        }
+    });
+});
+let allVersions = [];
+    let latestVersion = '0.0.0';
+
+    fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${releasesPath}`)
+    .then(response => response.json())
+    .then(files => {
+        // First pass to collect all versions
+        files.forEach(file => {
+            if (file.type === 'file' && isValidFileType(file.name)) {
+                const version = extractVersion(file.name);
+                if (version) allVersions.push(version);
+            }
+        });
+        
+        // Determine latest version
+        latestVersion = determineLatestVersion(allVersions);
+        
+        // Second pass to create cards
+        files.forEach(file => {
+            if (file.type === 'file' && isValidFileType(file.name)) {
+                const card = createDownloadCard(file, latestVersion);
+                downloadGrid.appendChild(card);
+            }
+        });
+    });
+    
+    function extractVersion(filename) {
+        // Improved version extraction with v/V support
+        const versionMatch = filename.match(/[vV]?(\d+\.\d+\.\d+)/);
+        return versionMatch ? versionMatch[1] : null;
+    }
+
+    function determineLatestVersion(versions) {
+        return versions.reduce((latest, current) => {
+            const [latMajor, latMinor, latPatch] = latest.split('.').map(Number);
+            const [curMajor, curMinor, curPatch] = current.split('.').map(Number);
+            
+            if (curMajor > latMajor) return current;
+            if (curMajor === latMajor && curMinor > latMinor) return current;
+            if (curMajor === latMajor && curMinor === latMinor && curPatch > latPatch) return current;
+            return latest;
+        }, '0.0.0');
+    }
+
+    function createDownloadCard(file, latestVersion) {
+        const card = document.createElement('div');
+        card.className = 'download-card';
+        
+        const platform = getPlatform(file.name);
+        const version = extractVersion(file.name);
+        const sizeMB = (file.size / (1024 * 1024)).toFixed(1);
+        const countKey = `${encodeURIComponent(file.name)}`;
+        const isLatest = version === latestVersion;
+        const isPrerelease = /(alpha|beta|rc|dev)/i.test(file.name);
+
+        card.innerHTML = `
+            <div class="file-info">
+                <div class="file-name">${file.name}</div>
+                <div class="file-details">
+                    ${isLatest ? '<span class="file-badge latest">Latest</span>' : ''}
+                    <span class="file-badge platform-${platform}">${platform}</span>
+                    ${isPrerelease ? '<span class="file-badge prerelease">Pre-release</span>' : ''}
+                    <span class="file-badge version">v${version}</span>
+                </div>
+                <div class="file-meta">
+                    <span><i class="fas fa-weight-hanging"></i> ${sizeMB} MB</span>
+                    <span class="download-count"><i class="fas fa-spinner fa-spin"></i></span>
+                </div>
+                <a href="${file.download_url}" class="download-button" data-key="${countKey}">
+                    <i class="fas fa-download"></i>
+                    Download
+                </a>
+            </div>
+        `;
+
+        return card;
+    }
+    </script>
+
+</body>
+</html>
