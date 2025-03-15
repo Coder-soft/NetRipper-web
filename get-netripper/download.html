@@ -510,6 +510,30 @@
             position: relative;
             z-index: 1;
         }
+            /* Add these styles */
+    .file-badge.latest {
+        background: linear-gradient(45deg, var(--primary), var(--secondary));
+        color: #000 !important;
+        font-weight: bold;
+    }
+
+    .file-badge.prerelease {
+        background: rgba(255, 165, 0, 0.2);
+        color: #ffa500;
+    }
+
+    .download-card.latest {
+        border: 2px solid var(--primary);
+        box-shadow: 0 0 25px rgba(0,255,136,0.1);
+    }
+
+    .version-warning {
+        margin-top: 2rem;
+        padding: 1rem;
+        background: rgba(255,0,0,0.1);
+        border-left: 4px solid #ff4444;
+        border-radius: 4px;
+    }
 
         .file-name {
             font-size: 1.2rem;
