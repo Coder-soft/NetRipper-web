@@ -41,21 +41,17 @@
 
 *Simpler than hitting "Download":*
 
-bash
-
-Copy
+**Windows**
 
 ```
-netripper add "https://example.com/bigfile.zip" --output ~/Downloads
+python netripper (Version).py
 ```
 
-**Basic Commands**
+**Linux | Mac OS**
 
-| Command                  | Description                    |
-| ------------------------ | ------------------------------ |
-| `netripper pause-all`  | Pause active downloads         |
-| `netripper speed-test` | Find optimal server connection |
-| `netripper export`     | Save download queue            |
+```
+python3 netripper (Version).py
+```
 
 ---
 
@@ -79,6 +75,8 @@ netripper add "https://example.com/bigfile.zip" --output ~/Downloads
 ---
 
 ## 📩 **Download Now**
+
+Portable Terminal Edition
 
 [Windows 10/11](https://example.com) (Other Soon)
 
