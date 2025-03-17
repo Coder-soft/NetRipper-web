@@ -5,7 +5,7 @@
 
 [![Platform](https://img.shields.io/badge/Platform-Windows-blue)](https://example.com)
 [![License](https://img.shields.io/badge/License-MIT-green)](https://example.com)
-[![Version](https://img.shields.io/badge/Version- Beta 2.0.0-red)](https://example.com)
+[![Version](https://img.shields.io/badge/Version-Beta 2.0.0-red)](https://example.com)
 ![Downloads](https://img.shields.io/badge/Downloads-10%2B-gold)
 
 ---
