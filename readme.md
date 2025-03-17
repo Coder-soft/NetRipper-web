@@ -89,7 +89,7 @@ A: Our proprietary HyperThread algorithm minimizes TCP handshake overhead.
 A: 100% open-source code with weekly security audits.
 
 **Q: Cross-platform?**
-A: Works on Windows, macOS, and Linux (AppImage supported).
+A: Works on Windows, macOS, and Linux (through scripts).
 
 **Q: CLI support?**
 A: Yes! Full automation capabilities.
