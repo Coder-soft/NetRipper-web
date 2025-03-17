@@ -65,7 +65,6 @@ python3 netripper (Version).py
 
 ---
 
----
 
 ## 📊 **Benchmarks**
 
@@ -77,7 +76,7 @@ python3 netripper (Version).py
 
 Portable Terminal Edition
 
-[Windows 10/11](https://example.com) (Other Soon)
+[Windows 10/11](https://net-ripper.netlify.app/get-netripper/download.html) (Other Soon)
 
 ---
 
