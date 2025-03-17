@@ -80,7 +80,7 @@ netripper add "https://example.com/bigfile.zip" --output ~/Downloads
 
 ## 📩 **Download Now**
 
-[Windows 10/11](https://example.com) ()Other Soon)
+[Windows 10/11](https://example.com) (Other Soon)
 
 ---
 
