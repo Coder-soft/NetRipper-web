@@ -69,7 +69,7 @@ python3 netripper (Version).py
 
 ## 📊 **Benchmarks**
 
-![Benchmark Chart](https://via.placeholder.com/800x400.png?text=Net+Ripper+vs+Competitors+Speed+Comparison)
+![Benchmark Chart](https://net-ripper.netlify.app/assets/NR.png)
 
 ---
 
