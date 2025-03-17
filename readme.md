@@ -19,7 +19,6 @@
 ## ✨ **Features That Blow Minds**
 
 - ⚡ **HyperThread Technology** - 32 simultaneous connections per download
-- 🌐 **Browser Integration** - Works seamlessly with Chrome, Firefox, Edge
 - 📉 **Resource Slim** - Uses under 1GB RAM even during heavy downloads
 - 🕒 **Smart Scheduler** - Set downloads for off-peak hours
 - 🔐 **Military-Grade Encryption** - AES-256 protected transfers
@@ -35,7 +34,7 @@
 
 **Script Installation Link for Windows | MacOS | Linux** 
 
-[Scripts List](/scripts)
+[Scripts List](build/scripts)
 
 ## 🖥 **Usage**
 
