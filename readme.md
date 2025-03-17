@@ -97,4 +97,4 @@ A: Yes! Full automation capabilities.
 ---
 
 **Made with ❤️ by developers who hate waiting for downloads**
-*MIT License | © 2025 Net Ripper Team*
+*GPL License | © 2025 Net Ripper Team*
