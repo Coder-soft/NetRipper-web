@@ -33,11 +33,9 @@
 
 *Get started in 30 seconds:*
 
-**Windows**
+**Script Installation Link for Windows | MacOS | Linux** 
 
-```powershell
-winget install netripper
-```
+[Scripts List](/scripts)
 
 ## 🖥 **Usage**
 
