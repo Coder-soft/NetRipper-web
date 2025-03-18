@@ -32,9 +32,11 @@
 
 *Get started in 30 seconds:*
 
-**Script Installation Link for Windows | MacOS | Linux** 
+**Script Installation Link for Windows | MacOS | Linux**
 
 [Scripts List](build/scripts)
+
+(Release One is Recommended)
 
 ## 🖥 **Usage**
 
@@ -43,7 +45,7 @@
 **Windows**
 
 ```
-python netripper (Version).py
+Run .exe File
 ```
 
 **Linux | Mac OS**
@@ -65,8 +67,9 @@ python3 netripper (Version).py
 
 ---
 
-
 ## 📊 **Benchmarks**
+
+These Tests Were tested with a speed of 12MBps
 
 ![Benchmark Chart](https://net-ripper.netlify.app/assets/NR.png)
 
@@ -74,7 +77,7 @@ python3 netripper (Version).py
 
 ## 📩 **Download Now**
 
-Portable Terminal Edition
+Portable .exe Terminal Edition
 
 [Windows 10/11](https://net-ripper.netlify.app/get-netripper/download.html) (Other Soon)
 
@@ -82,8 +85,8 @@ Portable Terminal Edition
 
 ## ❓ **FAQ**
 
-**Q: How is this faster than IDM?**
-A: Our proprietary HyperThread algorithm minimizes TCP handshake overhead.
+**Q:** **Why Does it Says "The Program You are Running is Not Safe"?**
+A: Net Ripper is 100% and open-source, But to make the warning go away we would need a license, which is not cheap.
 
 **Q: Is it safe?**
 A: 100% open-source code with weekly security audits.

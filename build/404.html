@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 - Page Not Found</title>
+  <style>
+    /* ===============================
+       Global Reset & Box Sizing
+       =============================== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    /* ===============================
+       CSS Variables for Easy Customization
+       =============================== */
+    :root {
+      --primary-color: #3498db;
+      --secondary-color: #2ecc71;
+      --accent-color: #e74c3c;
+      --light-bg: #ecf0f1;
+      --dark-text: #2c3e50;
+      --font-family: 'Montserrat', sans-serif;
+    }
+    
+    /* ===============================
+       Global Styles
+       =============================== */
+    body {
+      font-family: var(--font-family);
+      background-color: var(--light-bg);
+      color: var(--dark-text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+      padding: 1rem;
+    }
+    
+    .container {
+      max-width: 600px;
+    }
+    
+    h1 {
+      font-size: 6rem;
+      color: var(--accent-color);
+      margin-bottom: 1rem;
+    }
+    
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+    
+    a.btn {
+      display: inline-block;
+      background-color: var(--primary-color);
+      color: #fff;
+      text-decoration: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 4px;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+    
+    a.btn:hover {
+      background-color: #2980b9;
+    }
+    
+    footer {
+      position: absolute;
+      bottom: 1rem;
+      font-size: 0.8rem;
+      color: #777;
+      width: 100%;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>404</h1>
+    <p>Oops! The page you are looking for doesn't exist.</p>
+    <a href="/" class="btn">Go Back Home</a>
+  </div>
+  
+  <footer>
+    &copy; 2025 Team Wheels. All rights reserved.
+  </footer>
+</body>
+
+<script>
+    // Console Log
+    console.log("404 - Page Not Found");
+</script>
+
+</html>
+
